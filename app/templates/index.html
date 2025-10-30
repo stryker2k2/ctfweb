@@ -7,12 +7,13 @@
     <h2>Capture the Flag Victim Machines</h2>
     <p>In this Capture the Flag, you will ...</p>
 
-    
-    {% for i in range(3) %}
+    {% for class in data %}
         <div class="row my-3">
             <div class="col-3"></div>
             <div class="col-6">
-                {% include 'components/medals.html' %}
+                {% with class=class %}
+                    {% include 'components/medals.html' %}
+                {% endwith %}
             </div>
             <div class="col-2"></div>
         </div>

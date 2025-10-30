@@ -7,15 +7,26 @@
     <h2>Capture the Flag Victim Machines</h2>
     <p>Manage your target VM</p>
 
+    <form method="POST" action="/spinup">
+        <input class="btn btn-primary" type="submit" value="New VM">
+    </form>
     
-    {% for i in range(3) %}
+    <div class="container-fluid">
+        
         <div class="row my-3">
-            <div class="col-3"></div>
-            <div class="col-6">
-                {% include 'components/victim.html' %}
+            <!-- <div class="col-3"></div> -->
+             {% for container in containers %}
+            <div class="col-4">
+                {% with container=container %}
+                    {% include 'components/victim.html' %}
+                {% endwith %}
             </div>
-            <div class="col-2"></div>
+             {% endfor %}
+            <!-- <div class="col-3"></div> -->
         </div>
         
-    {% endfor %}
+       
+
+    </div>
+    
 {% endblock %}
