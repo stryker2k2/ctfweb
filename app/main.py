@@ -12,12 +12,16 @@ classes_path = "app/data/classes.json"
 def index():
     with open(classes_path, 'r') as file:
         data = json.load(file)
-    return render_template('index.html', data=data)
+    return render_template('index.html', navtab="home", data=data)
 
 @main.route('/machines')
 def machines():
     containers = getContainers()
-    return render_template('machines.html', containers=containers)
+    return render_template('machines.html', navtab="machines", containers=containers)
+
+@main.route('/walkthru')
+def walkthru():
+    return render_template('walkthru.html', navtab="walkthru")
 
 @main.route("/spinup", methods=["POST", "GET"])
 def spinup():
