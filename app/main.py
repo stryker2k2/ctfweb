@@ -23,13 +23,18 @@ def machines():
 def walkthru():
     return render_template('walkthru.html', navtab="walkthru")
 
-@main.route("/spinup", methods=["POST", "GET"])
+@main.route("/spinup", methods=["POST"])
 def spinup():
     if request.method == "POST":
         msg = createTarget()
         flash(msg)
         return redirect(url_for('main.machines'))
-    return "<h1>ERROR: 404</h1>"
+
+# TODO: @main.route("/powerOn", methods=["POST"])
+
+# TODO: @main.route("/powerDown", methods=["POST"])
+
+# TODO: @main.route("/deleteVM", methods=["POST"])
 
 # if __name__ == '__main__':
 #     app.run(host='0.0.0.0', port=5000, debug=True)

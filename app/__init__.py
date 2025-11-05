@@ -1,10 +1,12 @@
 from flask import Flask, Blueprint, session
 from app.main import main
 from app.extensions import celery_init_app
-import logging, uuid, os
+import logging, uuid, os, sys
 from datetime import datetime
 
-logging.basicConfig(level=logging.INFO)
+
+logging.basicConfig(level=logging.INFO, stream=sys.stderr, 
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
 def create_app():

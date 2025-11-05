@@ -1,6 +1,10 @@
 <!-- index.html -->
 {% extends "base.html" %}
 
+{% block head %}
+    <meta http-equiv="refresh" content="15">
+{% endblock %}
+
 {% block title %}About Us - My Site{% endblock %}
 
 {% block content %}
@@ -24,9 +28,6 @@
              {% endfor %}
             <!-- <div class="col-3"></div> -->
         </div>
-        
-       
-
     </div>
     
 {% endblock %}

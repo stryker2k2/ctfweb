@@ -4,6 +4,10 @@ from proxmoxer import ProxmoxAPI
 from proxmoxer.tools import Tasks
 import time
 import json
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 PROXMOX_NODE = 'pve'
 STORAGE_NAME = 'BARRACUDA'
@@ -20,6 +24,16 @@ proxmox = ProxmoxAPI(
     verify_ssl=False 
 )
 
+def powerUp(NEW_CT_ID):
+    try:
+        start_task = proxmox.nodes(PROXMOX_NODE).lxc(NEW_CT_ID).status.start.post()
+    except Exception as e:
+        logger.error(f"An error occurred while attempting to start CT {NEW_CT_ID}: {e}")
+        return -1
+
+    logger.info(f"{NEW_CT_ID} starting up")
+    return 0
+
 def getContainers():
     global container_ids
     active_count = 0
@@ -28,9 +42,9 @@ def getContainers():
     containers = proxmox.nodes(PROXMOX_NODE).lxc.get()
 
     # Analyze and print the running containers
-    print("\n--- Containers Found Results ---")
-    print(f"{'CT ID':<6} | {'Status':<10} | {'Name':<8} | {'Tags'}")
-    print("-" * 50)
+    # print("\n--- Containers Found Results ---")
+    # print(f"{'CT ID':<6} | {'Status':<10} | {'Name':<8} | {'Tags'}")
+    # print("-" * 50)
 
     data = []
 
@@ -41,7 +55,7 @@ def getContainers():
         tags = container.get('tags')
         
         # We are specifically checking if the value is 'running'
-        print(f"{vmid:<6} | {status:<10} | {name:<8} | {tags}")
+        # print(f"{vmid:<6} | {status:<10} | {name:<8} | {tags}")
         active_count += 1
         container_ids.append(vmid)
 
@@ -96,9 +110,28 @@ def createTarget():
             f"gw={GATEWAY_IP}"
         )
 
-    proxmox.nodes(PROXMOX_NODE).lxc(NEW_CT_ID).config.put(
+    # Update network configuration - this may or may not return a task ID
+    config_result = proxmox.nodes(PROXMOX_NODE).lxc(NEW_CT_ID).config.put(
             net0=FULL_NET_CONFIG
         )
+    
+    print(f"Network configuration update result: {config_result}")
+    
+    # Check if config.put returned a task ID (some operations do, some don't)
+    if config_result and isinstance(config_result, str) and config_result.startswith('UPID:'):
+        print(f"Config update task started: {config_result}")
+        # Wait for the config task to complete
+        config_exitstatus = ''
+        while 'OK' not in config_exitstatus:
+            config_exitstatus = Tasks.blocking_status(proxmox, config_result)['exitstatus']
+            time.sleep(1)
+        print(f'Config update completed with exitstatus: {config_exitstatus}')
+    else:
+        print("Network configuration updated synchronously")
+    
+    power_result = powerUp(NEW_CT_ID)
+
+    if power_result == -1:
+        return f"An error occurred while attempting to start CT {NEW_CT_ID}: {e}"
 
     return f"Node {NEW_CT_ID} has been created at {NEW_IP_ADDRESS[:-3]}"
-
