@@ -1,0 +1,20 @@
+[
+    {
+        "order": 1,
+        "title": "Bronze",
+        "description": "Basics of Buffer Overflow",
+        "subtext": "Discover common mistakes make by C Language Developers that lead to Vulnerabilities"
+    },
+    {
+        "order": 2,
+        "title": "Silver",
+        "description": "Perform a Simple Buffer Overflow",
+        "subtext": "Discover the vulnerability on a local program and then exploit a vulnerable server"
+    },
+    {
+        "order": 3,
+        "title": "Gold",
+        "description": "Inject Custom Shellcode",
+        "subtext": "Use your own Shellcode to get the Server's Username and Password"
+    }
+]

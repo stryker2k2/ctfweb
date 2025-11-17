@@ -32,7 +32,7 @@ def spinup():
 
 # TODO: @main.route("/powerOn", methods=["POST"])
 
-# TODO: @main.route("/powerDown", methods=["POST"])
+# TODO: @main.route("/powerOff", methods=["POST"])
 
 # TODO: @main.route("/deleteVM", methods=["POST"])
 
