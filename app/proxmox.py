@@ -39,7 +39,11 @@ def getContainers():
     active_count = 0
 
     # Check if the Node is correct by attempting the API call
-    containers = proxmox.nodes(PROXMOX_NODE).lxc.get()
+    try:
+        containers = proxmox.nodes(PROXMOX_NODE).lxc.get()
+    except:
+        logger.warn("No Proxmox Connected")
+        return [{"vmid": 0, "status": "stopped", "name": "None", "tags": "None"}]
 
     # Analyze and print the running containers
     # print("\n--- Containers Found Results ---")
