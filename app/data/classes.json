@@ -4,20 +4,26 @@
         "title": "Bronze",
         "img": "bronze.png",
         "description": "Easy as Pie",
-        "subtext": "The easiest challenge with a great walkthru"
+        "subtext": "The easiest challenge with a great walkthru",
+        "submit_btn": "Coming Soon",
+        "active": false
     },
     {
         "order": 2,
         "title": "Silver",
         "img": "silver.png",
         "description": "Test your Skills",
-        "subtext": "A medium skill challenge with hints in the code"
+        "subtext": "A medium skill challenge with hints in the code",
+        "submit_btn": "Check It Out",
+        "active": true
     },
     {
         "order": 3,
         "title": "Gold",
         "img": "gold.png",
         "description": "Scale Mount Epic",
-        "subtext": "Can you find the exploit and find the local user's password?"
+        "subtext": "Can you find the exploit and find the local user's password?",
+        "submit_btn": "Coming Soon",
+        "active": false
     }
 ]

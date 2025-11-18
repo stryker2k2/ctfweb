@@ -19,6 +19,10 @@ def machines():
     containers = getContainers()
     return render_template('machines.html', navtab="machines", containers=containers)
 
+@main.route('/challenge/<medal>')
+def challenge(medal):
+    return render_template('challenge.html', medal=medal, navtab="challenges")
+
 @main.route('/walkthru')
 def walkthru():
     return render_template('walkthru.html', navtab="walkthru")
