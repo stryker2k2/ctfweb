@@ -47,6 +47,44 @@ int main(int argc, char *argv[])
 ```
 """
 
+python_md = """
+```python
+# Bronze CTF
+
+import subprocess
+import os
+
+# The name of the executable file in the current directory
+EXECUTABLE_NAME = './bronze'
+
+# The specific string parameter: 'A' repeated 16 times
+PARAMETER_STRING = 'A' * 16
+
+def run_program_with_parameter():
+
+    command = [EXECUTABLE_NAME, PARAMETER_STRING]
+    
+    result = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=False 
+    )
+
+    # Display the results
+    if result.stdout:
+        print(result.stdout)
+
+    if result.returncode < 0:
+        if result.returncode == -11:
+            print("SEGMENT FAULT!")
+            exit(-11)
+        print(f"Error!")
+
+if __name__ == "__main__":
+    run_program_with_parameter()
+"""
+
 main = Blueprint("main", __name__)
 logger = logging.getLogger(__name__)
 
@@ -71,7 +109,8 @@ def challenge(medal):
 
         md = MarkdownIt().enable('table').enable('strikethrough').enable('linkify') # Enable desired extensions
         markdown_content = md.render(bronze_md)
-    return render_template('challenge.html', medal=medal, navtab="challenges", markdown_content=markdown_content)
+        python_content = md.render(python_md)
+    return render_template('challenge.html', medal=medal, navtab="challenges", markdown_content=markdown_content, python_content=python_content)
 
 @main.route('/walkthru')
 def walkthru():
