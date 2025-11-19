@@ -227,29 +227,36 @@ unzip /tmp/ghidra.zip -d ~/Tools/</code></p>
         <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#ghidraTwo" aria-expanded="false" aria-controls="ghidraTwo">
-                Step #2: Create File
+                Step #2: Open File
             </button>
         </h2>
         <div id="ghidraTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="row">
                     <div class="col-6 text-start">
-                        <h5><strong>Open Desktop Folder inside VS Code</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click on the File Icon</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Open Folder"</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "repo"</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Open"</p> </br> </br>
-                        <h5><strong>Create a New File</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Right Click in the Left Pane</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "New File"</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Name it "bronze.c"</p>
+                        <h5><strong>Create a New Project</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "File"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "New Project"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Give the Project a Name (ex: Bronze)</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Finish"</p> </br> </br>
+                        <h5><strong>Open Bronze Executable</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Open File Explorer</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Drag Bronze Executable into Active Projects</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "OK"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click the Ghidra Dragon</p>
                     </div>
                     <div class="col-6">
                         <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/vscode_002.png')}}" />
+                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_002.png')}}" />
                         </br></br>
                         <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/vscode_003.png')}}" />
+                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_003.png')}}" />
+                        </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_004.png')}}" />
+                            </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_005.png')}}" />
                     </div>
                 </div>
             </div>
@@ -259,33 +266,38 @@ unzip /tmp/ghidra.zip -d ~/Tools/</code></p>
         <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#ghidraThree" aria-expanded="false" aria-controls="ghidraThree">
-                Step #3: Code Vulnerable Program
+                Step #3: Static Analysis
             </button>
         </h2>
         <div id="ghidraThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="row">
                     <div class="col-6 text-start">
-                        <h5><strong>Create Vulnerable Code</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Copy the Code to the right into the "bronze.c" file</p>
+                        <h5><strong>Navigate to Main Function</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Find and Click on "main" in Exports (Left Column)</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click on "main" in the Listings (Center Column)</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Review Decompiled C Code (Right Column)</p>
                         </br> </br>
 
 
-                        <h5><strong>Review Vulnerable Functions</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>The function <code>sprintf</code> is the vulnerable
-                            function. According to Microsoft,
-                        <p class="fst-italic">"the sprintf function formats and stores a series of characters and values
-                            in buffer."</p> But it does not provide say that this function is capable of error
-                        correction or size protection. We are going to use this flaw to wreck the program and force it
-                        to perform a different non-planned tasked.</p>
+                        <h5><strong>Find Vulnerable Functions</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>We see the funtion <code>sprintf</code> again, which we know is 
+                            vulnerable to buffer overflow. Furthermore, we see that it will save the <code>param_1</code> to 
+                            <code>local_50</code>, which is only big enough for 64 characters.</p>
 
                     </div>
-                    <div class="col-6 text-start">
-                        <div class="bg-dark-subtle text-dark-emphasis">
-                            <code class="user-select-all">
-                        {{ markdown_content|safe }}
-                    </code>
-                        </div></br></br>
+                    <div class="col-6">
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/static_002.png')}}" />
+                        </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/static_003.png')}}" />
+                        </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/static_004.png')}}" />
+                            </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/static_005.png')}}" />
                     </div>
                 </div>
             </div>
