@@ -1,0 +1,383 @@
+</br>
+<p class="text-wrap">In this Bronze Challenge, we will create a simple program using the C Language using functions that
+    are known to be vulnerable to Buffer Overflows.</p>
+
+</br></br></br>
+<h3 class="text-start">Create Vulnerable Executable</h3>
+<div class="accordion" id="accordionExample" data-bs-theme="dark">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#executableOne"
+                aria-expanded="true" aria-controls="executableOne">
+                Step #1: Open Visual Studio Code
+            </button>
+        </h2>
+        <div id="executableOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-8 text-start">
+                        <h5><strong>Launch VS Code</strong></h5></br>
+                        <p><i class="bi bi-dot"></i>Visual Studio Code is installed on the Lubuntu Laptops provided.
+                            Find it on the Desktop and Double Click to Open. If prompted, select "Execute".</p> </br>
+                        </br>
+                        <h5><strong>Install VS Code (if not available)</strong></h5></br>
+                        <p><i class="bi bi-dot"></i>To install VS Code on your own personal machine, copy & paste the
+                            following into your Ubuntu Terminal</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">sudo snap install code --classic</code></p>
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/vscode_001.png')}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#executableTwo" aria-expanded="false" aria-controls="executableTwo">
+                Step #2: Create File
+            </button>
+        </h2>
+        <div id="executableTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Open Desktop Folder inside VS Code</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click on the File Icon</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Open Folder"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "repo"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Open"</p> </br> </br>
+                        <h5><strong>Create a New File</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Right Click in the Left Pane</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "New File"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Name it "bronze.c"</p>
+                    </div>
+                    <div class="col-6">
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/vscode_002.png')}}" />
+                        </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/vscode_003.png')}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#executableThree" aria-expanded="false" aria-controls="executableThree">
+                Step #3: Code Vulnerable Program
+            </button>
+        </h2>
+        <div id="executableThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Create Vulnerable Code</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Copy the Code to the right into the "bronze.c" file</p>
+                        </br> </br>
+
+
+                        <h5><strong>Review Vulnerable Functions</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>The function <code>sprintf</code> is the vulnerable
+                            function. According to Microsoft,
+                        <p class="fst-italic">"the sprintf function formats and stores a series of characters and values
+                            in buffer."</p> But it does not provide say that this function is capable of error
+                        correction or size protection. We are going to use this flaw to wreck the program and force it
+                        to perform a different non-planned tasked.</p>
+
+                    </div>
+                    <div class="col-6 text-start">
+                        <div class="bg-dark-subtle text-dark-emphasis">
+                            <code class="user-select-all">
+                        {{ markdown_content|safe }}
+                    </code>
+                        </div></br></br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#executableFour" aria-expanded="false" aria-controls="executableFour">
+                Step #4: Compile into an Executable
+            </button>
+        </h2>
+        <div id="executableFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Compile Code into a 32-bit Executable</strong></h5></br>
+                        <p class="lh-sm">We will be compiling this program as a 32-bit Executable using the GNU Compiler
+                            Collection. This is a popular set of compilers for various programming languages.</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Open a Terminal by going to VIEW > TERMINAL</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Run the following command</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">gcc -m32 -no-pie -O0 -Wno-format-truncation -fno-stack-protector bronze.c -o bronze</code>
+                        </p> </br> </br>
+
+                        <h5><strong>Review the Compilation Command</strong></h5></br>
+                        <p class="lh-sm">Let's break down the command we just passed</p></br>
+                        <p class="lh-sm"><strong>gcc</strong> - The GNU Compiler for C Language</p>
+                        <p class="lh-sm"><strong>-m32</strong> - 32 Bit Application</p>
+                        <p class="lh-sm"><strong>-no-pie</strong> - Disables Position-Independent Executable</p>
+                        <p class="lh-sm"><strong>-O0</strong> - No Optimization</p>
+                        <p class="lh-sm"><strong>-Wno-format-truncation</strong> - Disables Format Truncation Warnings
+                        </p>
+                        <p class="lh-sm"><strong>-fno-stack-protector</strong> - Disable Stack Smash Protection</p>
+                        <p class="lh-sm"><strong>bronze.c</strong> - The File to be Compiled</p>
+                        <p class="lh-sm"><strong>-o bronze</strong> - Output Name of the Compiled Executable</p>
+                        </br></br></br>
+
+                        <h5><strong>Install GCC (if missing)</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>The provided laptops have GCC and the 32-bit Libraries
+                            required. To install these onto your personal laptops, use the following commands.</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">sudo apt install build-essential libc6-dev-i386 -y</code></p>
+                    </div>
+                    <div class="col-6 text-start">
+                        <div class="bg-dark-subtle text-dark-emphasis">
+                            <img class="img-fluid"
+                                src="{{url_for('static', filename='img/challenges/bronze/vscode_004.png')}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#executableFive" aria-expanded="false" aria-controls="executableFive">
+                Step #5: Run the Executable
+            </button>
+        </h2>
+        <div id="executableFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Running the Executable as Intended</strong></h5></br>
+                        <p class="lh-sm">We coded this program to accept one parameter through the command line and save that parameter to a log. Run the program as intended and monitor the log file.</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">./bronze "Hello World!"</code></p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">cat log.txt</code></p> </br> </br>
+
+                        <h5><strong>Runing the Executable Incorrectly and Perform Buffer Overflow</strong></h5></br>
+                        <p class="lh-sm">Any parameter we input that is under the size limit of 64 bytes (characters) will work as intended. But, if we pass in a parameter more than 64 bytes (characters), the program will save all of the characters to memory; even if the parameter is more than 64 bytes. We will notice that the program will crash and provide us with a "Segmentation Fault".</p></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">./bronze "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"</code></p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">cat log.txt</code></p>
+                    </div>
+                    <div class="col-6 text-start">
+                        <div class="bg-dark-subtle text-dark-emphasis">
+                            <img class="img-fluid"
+                                src="{{url_for('static', filename='img/challenges/bronze/vscode_005.png')}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</br></br></br>
+<h3 class="text-start">Perform Static Analysis</h3>
+<div class="accordion" id="accordionExample" data-bs-theme="dark">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ghidraOne"
+                aria-expanded="true" aria-controls="ghidraOne">
+                Step #1: Open Ghidra
+            </button>
+        </h2>
+        <div id="ghidraOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-8 text-start">
+                        <h5><strong>Launch Ghidra</strong></h5></br>
+                        <p><i class="bi bi-dot"></i>Ghidra is installed on the Lubuntu Laptops provided.
+                            Find it on the Desktop and Double Click to Open. If prompted, select "Execute".</p> </br>
+                        </br>
+                        <h5><strong>Install Ghidra (if not available)</strong></h5></br>
+                        <p><i class="bi bi-dot"></i>To install Ghidra on your own personal machine, copy & paste the
+                            following into your Ubuntu Terminal</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">wget -O - https://apt.corretto.aws/corretto.key | sudo gpg --dearmor -o /usr/share/keyrings/corretto-keyring.gpg && 
+echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" | sudo tee /etc/apt/sources.list.d/corretto.list</code></p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">sudo apt-get update; sudo apt-get install -y java-21-amazon-corretto-jdk;
+wget https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_11.4.2_build/ghidra_11.4.2_PUBLIC_20250826.zip -O /tmp/ghidra.zip;
+unzip /tmp/ghidra.zip -d ~/Tools/</code></p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">ln -s /home/$USER/Tools/ghidra_11.4.2_PUBLIC/ghidraRun /home/$USER/Desktop/ghidra</code>
+                    </div>
+                    <div class="col-4">
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_001.png')}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#ghidraTwo" aria-expanded="false" aria-controls="ghidraTwo">
+                Step #2: Create File
+            </button>
+        </h2>
+        <div id="ghidraTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Open Desktop Folder inside VS Code</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click on the File Icon</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Open Folder"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "repo"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Open"</p> </br> </br>
+                        <h5><strong>Create a New File</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Right Click in the Left Pane</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "New File"</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Name it "bronze.c"</p>
+                    </div>
+                    <div class="col-6">
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/vscode_002.png')}}" />
+                        </br></br>
+                        <img class="img-fluid"
+                            src="{{url_for('static', filename='img/challenges/bronze/vscode_003.png')}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#ghidraThree" aria-expanded="false" aria-controls="ghidraThree">
+                Step #3: Code Vulnerable Program
+            </button>
+        </h2>
+        <div id="ghidraThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Create Vulnerable Code</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Copy the Code to the right into the "bronze.c" file</p>
+                        </br> </br>
+
+
+                        <h5><strong>Review Vulnerable Functions</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>The function <code>sprintf</code> is the vulnerable
+                            function. According to Microsoft,
+                        <p class="fst-italic">"the sprintf function formats and stores a series of characters and values
+                            in buffer."</p> But it does not provide say that this function is capable of error
+                        correction or size protection. We are going to use this flaw to wreck the program and force it
+                        to perform a different non-planned tasked.</p>
+
+                    </div>
+                    <div class="col-6 text-start">
+                        <div class="bg-dark-subtle text-dark-emphasis">
+                            <code class="user-select-all">
+                        {{ markdown_content|safe }}
+                    </code>
+                        </div></br></br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#ghidraFour" aria-expanded="false" aria-controls="ghidraFour">
+                Step #4: Compile into an Executable
+            </button>
+        </h2>
+        <div id="ghidraFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Compile Code into a 32-bit Executable</strong></h5></br>
+                        <p class="lh-sm">We will be compiling this program as a 32-bit Executable using the GNU Compiler
+                            Collection. This is a popular set of compilers for various programming languages.</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Open a Terminal by going to VIEW > TERMINAL</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Run the following command</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">gcc -m32 -no-pie -O0 -Wno-format-truncation -fno-stack-protector bronze.c -o bronze</code>
+                        </p> </br> </br>
+
+                        <h5><strong>Review the Compilation Command</strong></h5></br>
+                        <p class="lh-sm">Let's break down the command we just passed</p></br>
+                        <p class="lh-sm"><strong>gcc</strong> - The GNU Compiler for C Language</p>
+                        <p class="lh-sm"><strong>-m32</strong> - 32 Bit Application</p>
+                        <p class="lh-sm"><strong>-no-pie</strong> - Disables Position-Independent Executable</p>
+                        <p class="lh-sm"><strong>-O0</strong> - No Optimization</p>
+                        <p class="lh-sm"><strong>-Wno-format-truncation</strong> - Disables Format Truncation Warnings
+                        </p>
+                        <p class="lh-sm"><strong>-fno-stack-protector</strong> - Disable Stack Smash Protection</p>
+                        <p class="lh-sm"><strong>bronze.c</strong> - The File to be Compiled</p>
+                        <p class="lh-sm"><strong>-o bronze</strong> - Output Name of the Compiled Executable</p>
+                        </br></br></br>
+
+                        <h5><strong>Install GCC (if missing)</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>The provided laptops have GCC and the 32-bit Libraries
+                            required. To install these onto your personal laptops, use the following commands.</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">sudo apt install build-essential libc6-dev-i386 -y</code></p>
+                        </br> </br>
+                    </div>
+                    <div class="col-6 text-start">
+                        <div class="bg-dark-subtle text-dark-emphasis">
+                            <img class="img-fluid"
+                                src="{{url_for('static', filename='img/challenges/bronze/vscode_004.png')}}" />
+                        </div></br></br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#ghidraFive" aria-expanded="false" aria-controls="ghidraFive">
+                Step #5: Run the Executable
+            </button>
+        </h2>
+        <div id="ghidraFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="row">
+                    <div class="col-6 text-start">
+                        <h5><strong>Running the Executable as Intended</strong></h5></br>
+                        <p class="lh-sm">We coded this program to accept one parameter through the command line and save that parameter to a log. Run the program as intended and monitor the log file.</p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">./bronze "Hello World!"</code></p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">cat log.txt</code></p> </br> </br>
+
+                        <h5><strong>Runing the Executable Incorrectly and Perform Buffer Overflow</strong></h5></br>
+                        <p class="lh-sm">Any parameter we input that is under the size limit of 64 bytes (characters) will work as intended. But, if we pass in a parameter more than 64 bytes (characters), the program will save all of the characters to memory; even if the parameter is more than 64 bytes. We will notice that the program will crash and provide us with a "Segmentation Fault".</p></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">./bronze "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"</code></p>
+                        <p class="lh-sm"><i class="bi bi-dot"></i><code class="user-select-all">cat log.txt</code></p> </br> </br>
+                        </br></br></br>
+
+                        <h5><strong>Install GCC (if missing)</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>The provided laptops have GCC and the 32-bit Libraries
+                            required. To install these onto your personal laptops, use the following commands.</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">sudo apt install build-essential libc6-dev-i386 -y</code></p>
+                        </br> </br>
+                    </div>
+                    <div class="col-6 text-start">
+                        <div class="bg-dark-subtle text-dark-emphasis">
+                            <img class="img-fluid"
+                                src="{{url_for('static', filename='img/challenges/bronze/vscode_005.png')}}" />
+                        </div></br></br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

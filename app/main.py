@@ -2,6 +2,50 @@ from flask import Flask, render_template, Blueprint, redirect, url_for, request,
 import logging, json
 from pathlib import Path
 from .proxmox import getContainers, createTarget
+from markdown_it import MarkdownIt
+
+bronze_md = """
+```c
+#include <stdio.h>
+#include <string.h>
+
+void printSecret() {
+    int encoded_secret[] = {0x134C, 0x1375, 0x135B, 0x1342, 0x1304, 0x131A, 0x1303, 0x1359, 0x1353, 0x131A, 0x1307, 0x1345, 0x1356, 0x1359, 0x1350, 0x1304, 0x134A, 0x1337};
+
+    int key = 0x1337;
+    int i = 0;
+
+    printf("CTF-KEY ");
+    while ((encoded_secret[i] ^ key) != 0) {
+        printf("%c", (char)(encoded_secret[i] ^ key));
+        i++;
+    }
+    printf("\\n");
+}
+
+int logToFile(char *logTxt)
+{ 
+    char tmpLog[64];
+    printf("[+] logging to file\\n");
+    sprintf(tmpLog, "[+] %s", logTxt);
+    FILE *logFile = fopen("log.txt", "w");
+    if (logFile == NULL)
+    {
+        return 1;
+    }
+
+    fprintf(logFile, "%s\\n", tmpLog);
+    fclose(logFile);
+
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    logToFile(argv[1]);
+}
+```
+"""
 
 main = Blueprint("main", __name__)
 logger = logging.getLogger(__name__)
@@ -21,7 +65,13 @@ def machines():
 
 @main.route('/challenge/<medal>')
 def challenge(medal):
-    return render_template('challenge.html', medal=medal, navtab="challenges")
+    markdown_content = "None"
+    if medal == 'bronze':
+        logger.info("[+] Bronze Challenge")
+
+        md = MarkdownIt().enable('table').enable('strikethrough').enable('linkify') # Enable desired extensions
+        markdown_content = md.render(bronze_md)
+    return render_template('challenge.html', medal=medal, navtab="challenges", markdown_content=markdown_content)
 
 @main.route('/walkthru')
 def walkthru():

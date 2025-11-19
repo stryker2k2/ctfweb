@@ -4,3 +4,5 @@ celery==5.5.3
 redis==6.1.1
 proxmoxer==2.2.0
 requests==2.32.4
+Markdown==3.7
+markdown-it-py==3.0.0

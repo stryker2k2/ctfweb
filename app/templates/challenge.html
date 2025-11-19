@@ -5,11 +5,14 @@
 
 {% block content %}
     <h2>{{ medal.capitalize() }} Challenge</h2>
-    <p>Manage your target VM</p>
-    
-    <div class="container-fluid">
+    <p>Challenge Yourself</p>
+
+    <div class="container">
         
-        
+    {% with medal=medal %}
+        {% include 'challenges/' + medal + '.html' | lower %}
+    {% endwith %}
+
     </div>
     
 {% endblock %}
