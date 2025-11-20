@@ -185,7 +185,7 @@
 </div>
 
 </br></br></br>
-<h3 class="text-start">Perform Static Analysis</h3>
+<h3 class="text-start">Static Analysis</h3>
 <div class="accordion" id="staticAccordion" data-bs-theme="dark">
     <div class="accordion-item">
         <h2 class="accordion-header">
@@ -333,7 +333,7 @@ unzip /tmp/ghidra.zip -d ~/Tools/</code></p>
 </div>
 
 </br></br></br>
-<h3 class="text-start">Prepare Python Script</h3>
+<h3 class="text-start">Dynamic Analysis</h3>
 <div class="accordion" id="pythonAccordion" data-bs-theme="dark">
     <div class="accordion-item">
         <h2 class="accordion-header">
@@ -388,104 +388,23 @@ unzip /tmp/ghidra.zip -d ~/Tools/</code></p>
         <h2 class="accordion-header">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#pythonTwo" aria-expanded="false" aria-controls="pythonTwo">
-                Step #2: Open File
+                Step #2: Run Executable in Ethan's Debugger
             </button>
         </h2>
         <div id="pythonTwo" class="accordion-collapse collapse" data-bs-parent="#pythonAccordion">
             <div class="accordion-body">
                 <div class="row">
                     <div class="col-6 text-start">
-                        <h5><strong>Create a New Project</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "File"</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "New Project"</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Give the Project a Name (ex: Bronze)</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "Finish"</p> </br> </br>
-                        <h5><strong>Open Bronze Executable</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Open File Explorer</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Drag Bronze Executable into Active Projects</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click "OK"</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click the Ghidra Dragon</p>
+                        <h5><strong>Launch EDB</strong></h5></br>
+                        <p class="lh-sm"><i class="bi bi-dot"></i>Double Click on EDB</p></br> </br>
+                        <h5><strong>Install EDB (if not available)</strong></h5></br>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code
+                                class="user-select-all">sudo apt install edb-debugger -y</code>
                     </div>
                     <div class="col-6">
                         <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_002.png')}}" />
+                            src="{{url_for('static', filename='img/challenges/bronze/edb_001.png')}}" />
                         </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_003.png')}}" />
-                        </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_004.png')}}" />
-                            </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/ghidra_005.png')}}" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#pythonThree" aria-expanded="false" aria-controls="pythonThree">
-                Step #3: Static Analysis
-            </button>
-        </h2>
-        <div id="pythonThree" class="accordion-collapse collapse" data-bs-parent="#pythonAccordion">
-            <div class="accordion-body">
-                <div class="row">
-                    <div class="col-6 text-start">
-                        <h5><strong>Navigate to Main Function</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Find and Click on "main" in Exports (Left Column)</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Click on "main" in the Listings (Center Column)</p>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Review Decompiled C Code (Right Column)</p>
-                        </br> </br>
-
-
-                        <h5><strong>Find Vulnerable Functions</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Once you Double Click your way into <code>logToFile</code>, 
-                            we see the funtion <code>sprintf</code> again, which we know is vulnerable to buffer overflow. 
-                            Furthermore, we see that it will save the <code>param_1</code> to 
-                            <code>local_50</code>, which is only big enough for 64 characters.</p>
-                        </br> </br>
-
-                        <h5><strong>Discover Interesting Functions ("Crown Jewels")</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Now that we've found a vulnerable functions, let's 
-                        look at the Exports in the Symbol Tree. Here we can see other functions, even if they aren't directly 
-                        called in the main function. We see <code>main</code> and <code>logToFile</code>. Futhermore, we see an 
-                        interesting function called <code>printSecret.</code></br></br>Double Click on <code>printSecret</code> and 
-                        take a look at the code.</p>
-                        </br> </br>
-
-                        <h5><strong>Analyze Interesting Function</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Inside the <code>printSecret</code>, we see the human-readable 
-                            letters of "CTF-KEY", so we know that we are on the right track. But, there is some unreadable code 
-                            afterwards inside of a <code>for</code> loop. Although we cannot easily read the code, there is a 
-                            possibility that it would print out key CTF-KEY if the function were allowed to run.
-                        </br> </br>
-
-                        <h5><strong>Create a Plan</strong></h5></br>
-                        <p class="lh-sm"><i class="bi bi-dot"></i>Let's see if we can get our program to run the <code>printSecret</code>
-                            function. We see that this function is at Memory Location <code>0x080491c6</code>. Earlier, we saw that our 
-                            Buffer Overflow saved the excess characters into the Return Address and caused a Segmentation Fault. 
-                            If we could place this address into our Buffer Overflow string, we could redirect the execution and force it to execute this function. 
-                        </br> </br>
-
-                    </div>
-                    <div class="col-6">
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/static_002.png')}}" />
-                        </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/static_003.png')}}" />
-                        </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/static_004.png')}}" />
-                            </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/static_005.png')}}" />
-                            </br></br>
-                        <img class="img-fluid"
-                            src="{{url_for('static', filename='img/challenges/bronze/static_006.png')}}" />
                     </div>
                 </div>
             </div>
