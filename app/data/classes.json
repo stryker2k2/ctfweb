@@ -14,8 +14,8 @@
         "img": "silver.png",
         "description": "Test your Skills",
         "subtext": "A medium skill challenge with hints in the code",
-        "submit_btn": "Coming Soon",
-        "active": false
+        "submit_btn": "Check It Out",
+        "active": true
     },
     {
         "order": 3,

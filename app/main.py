@@ -1,5 +1,5 @@
-from flask import Flask, render_template, Blueprint, redirect, url_for, request, flash
-import logging, json
+from flask import Flask, render_template, Blueprint, redirect, url_for, request, flash, send_file, send_from_directory
+import logging, json, os
 from pathlib import Path
 from .proxmox import getContainers, createTarget
 from markdown_it import MarkdownIt
@@ -153,6 +153,11 @@ logger = logging.getLogger(__name__)
 
 classes_path = "app/data/classes.json"
 
+# Use the directory where this Python file is located
+BASE_DIR = os.path.abspath(os.path.dirname(__file__)) 
+# Join that base directory with the known relative path to your files
+DOWNLOAD_DIR = os.path.join(BASE_DIR, 'static', 'files')
+
 @main.route('/')
 def index():
     with open(classes_path, 'r') as file:
@@ -167,6 +172,7 @@ def machines():
 @main.route('/challenge/<medal>')
 def challenge(medal):
     markdown_content = "None"
+    python_content = "None"
     if medal == 'bronze':
         logger.info("[+] Bronze Challenge")
 
@@ -185,6 +191,17 @@ def spinup():
         msg = createTarget()
         flash(msg)
         return redirect(url_for('main.machines'))
+
+@main.route('/download/<version>')
+def download(version):
+
+    return send_from_directory(
+        directory=DOWNLOAD_DIR,
+        path=version,
+        as_attachment=True,
+        download_name=version, # Better to use the requested filename
+        mimetype='application/octet-stream'
+    )
 
 # TODO: @main.route("/powerOn", methods=["POST"])
 
