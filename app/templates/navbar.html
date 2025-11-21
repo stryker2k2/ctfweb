@@ -24,21 +24,17 @@
           {% if navtab == "walkthru" %}
             <a class="nav-link active text-bg-secondary rounded" href="{{url_for('main.walkthru')}}">Walkthru</a>
           {% else %}
-            <a class="nav-link" href="{{url_for('main.walkthru')}}">Walkthru</a>
+            <a class="nav-link disabled" href="{{url_for('main.walkthru')}}">Walkthru</a>
           {% endif %}
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Help</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             About
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Buffer Overflows</a></li>
-            <li><a class="dropdown-item" href="#">Author</a></li>
-            <li><a class="dropdown-item" href="#">Company</a></li>
-            <li><a class="dropdown-item" href="#">Game Hacking</a></li>
+            <li><a class="dropdown-item" href="https://linktr.ee/stryker2k2">Author</a></li>
+            <li><a class="dropdown-item" href="https://www.blacklanternsecurity.com">Company</a></li>
+            <li><a class="dropdown-item" href="https://www.gamehacking.gg/">Game Hacking</a></li>
           </ul>
         </li>
       </ul>

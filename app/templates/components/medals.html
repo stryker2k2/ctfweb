@@ -2,7 +2,7 @@
 
 <div class="card" data-bs-theme="dark">
     <div class="card-header">
-        {{class['title']}}
+        <h4><strong>{{class['title']}}</strong></h4>
     </div>
     <div class="card-body">
         <div class="row">
@@ -12,8 +12,9 @@
                 </span>
             </div>
             <div class="col-8">
-                <h5 class="card-title">{{class['description']}}</h5>
+                <h5 class="card-title"><strong>{{class['description']}}</strong></h5>
                 <p class="card-text">{{class['subtext']}}</p>
+                </br>
                 {% if class['active'] == true %}
                     <a href="{{url_for('main.challenge', medal=class['title']) | lower}}" class="btn btn-primary">{{class['submit_btn']}}</a>
                 {% else %}

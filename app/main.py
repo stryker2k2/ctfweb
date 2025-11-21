@@ -4,7 +4,7 @@ from pathlib import Path
 from .proxmox import getContainers, createTarget
 from markdown_it import MarkdownIt
 
-bronze_md = """
+bronze_c = """
 ```c
 #include <stdio.h>
 #include <string.h>
@@ -171,15 +171,15 @@ def machines():
 
 @main.route('/challenge/<medal>')
 def challenge(medal):
-    markdown_content = "None"
+    c_content = "None"
     python_content = "None"
     if medal == 'bronze':
         logger.info("[+] Bronze Challenge")
 
         md = MarkdownIt().enable('table').enable('strikethrough').enable('linkify') # Enable desired extensions
-        markdown_content = md.render(bronze_md)
+        c_content = md.render(bronze_c)
         python_content = md.render(python_md)
-    return render_template('challenge.html', medal=medal, navtab="challenges", markdown_content=markdown_content, python_content=python_content)
+    return render_template('challenge.html', medal=medal, navtab="challenges", c_content=c_content, python_content=python_content)
 
 @main.route('/walkthru')
 def walkthru():
